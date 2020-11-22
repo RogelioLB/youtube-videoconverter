@@ -1,0 +1,18 @@
+{
+  "name": "convertidor",
+  "version": "1.0.0",
+  "description": "Video Converter",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Rogelio",
+  "license": "ISC",
+  "dependencies": {
+    "@ytdl/ytdl": "^1.4.16",
+    "ajax-request": "^1.2.3",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "ytdl-core": "^4.0.6"
+  }
+}
