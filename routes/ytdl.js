@@ -100,7 +100,7 @@ audio.pipe(ffmpegProcess.stdio[4]);
 video.pipe(ffmpegProcess.stdio[5]);
 ffmpegProcess.stdio[6].pipe(fs.createWriteStream(path.resolve(__dirname,'../public/video.mkv')));
 }if(op=='MP4'){
-  ytdl(ref, { filter: format => format.container === 'mp4' ,quality:'137'||'136'}).pipe(fs.createWriteStream(path.resolve(__dirname,'../public/video.mp4')));
+  ytdl(ref, { filter: format => format.container === 'mp4' ,quality:'137'??'136'}).pipe(fs.createWriteStream(path.resolve(__dirname,'../public/video.mp4')));
 }else{
   ytdl(ref,{filter:'audioonly',format:'highest'}).pipe(fs.createWriteStream(path.resolve(__dirname,'../public/audio.mp3')));
 }
