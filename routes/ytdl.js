@@ -4,6 +4,7 @@ const cp = require('child_process');
 const readline = require('readline');
 // External modules
 const ytdl = require('ytdl-core');
+const peg=require('fluent-ffmpeg');
 const ffmpeg = require('ffmpeg-static');
 const {Router}=require('express');
 
@@ -17,21 +18,13 @@ routes.post("/",async (req,res)=>{
   // Global constants
   if(r){
   const ref = uri;
-  let info = await ytdl.getInfo(ref);
-let audioFormats = ytdl.filterFormats(info.formats, 'videoonly');
-let format = ytdl.chooseFormat(audioFormats, { quality:'highestvideo' });
-console.log('Format found!', format);
-audioFormats=ytdl.filterFormats(info.formats, 'audioonly');
- format = ytdl.chooseFormat(audioFormats, { quality:'highestaudio' });
-console.log('Format found!', format);
-
-if(op=='Video'){
   const tracker = {
     start: Date.now(),
     audio: { downloaded: 0, total: Infinity },
     video: { downloaded: 0, total: Infinity },
     merged: { frame: 0, speed: '0x', fps: 0 },
   };
+if(op=='Video'){
   
   // Get audio and video stream going
   const audio = ytdl(ref, { filter: 'audioonly', quality: 'highestaudio' })
@@ -59,7 +52,8 @@ if(op=='Video'){
   
     process.stdout.write(`running for: ${((Date.now() - tracker.start) / 1000 / 60).toFixed(2)} Minutes.`);
     readline.moveCursor(process.stdout, 0, -3);
-  }, 1000);
+    io.emit("upload",{downloaded:(tracker.video.downloaded / tracker.video.total * 100).toFixed(2)})
+  }, 5000);
   
   // Start the ffmpeg child process
   const ffmpegProcess = cp.spawn(ffmpeg, [
@@ -108,9 +102,18 @@ if(op=='Video'){
   video.pipe(ffmpegProcess.stdio[5]);
   ffmpegProcess.stdio[6].pipe(fs.createWriteStream(path.resolve(__dirname,'../public/video.mkv')));
 }if(op=='Audio'){
-  ytdl(ref,{filter:'audioonly',format:'highestaudio'}).pipe(fs.createWriteStream(path.resolve(__dirname,'../public/audio.mp3')));
+  ytdl(ref, { filter: 'audioonly', quality: 'highestaudio' })
+    .on('progress', (_, downloaded, total) => {
+      tracker.audio = { downloaded, total };
+      io.emit("upload",{downloaded:(tracker.audio.downloaded/tracker.audio.total*100).toFixed(2)})
+    }).on('end',()=>{
+      io.emit("Finish");
+    }).pipe(fs.createWriteStream(path.resolve(__dirname,'../public/audio.mp3')));
+  
+
+var id=ytdl.getVideoID(ref);
+res.send({op:true,id:id});
 }
-res.send({op:true});
 }
 });
 module.exports=routes;
