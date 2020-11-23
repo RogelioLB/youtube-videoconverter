@@ -7,13 +7,18 @@
     <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-    <form class="container" id="form">
+    <form class="container" id="form" name="form">
+        <div>
+            <input type="radio" name="Opciones" id="Audio" value="Audio">Audio
+            <input type="radio" name="Opciones" id="Video" value="Video">Video
+            <input type="radio" name="Opciones" id="Mp3" value="MP4 ">MP4
+        </div>
         <div>
             <input type="text" placeholder="Ingrese la url: " name="url" id="url">
         </div>
         <div>
             <button>Convertir</button>
-            <a href="video.mp4" download="video.mp4" id="download">Descargar</a>
+            <a href="video.mkv" download="video.mkv" id="download">Descargar</a>
         </div>
     </form>
 </body>
