@@ -12,6 +12,7 @@ const routes=Router();
 
 routes.post("/",async (req,res)=>{
   const {uri,op}=req.body;
+  var io=req.app.get("socket");
   let r=await ytdl.validateURL(uri);
   // Global constants
   if(r){
@@ -26,7 +27,7 @@ if(op=='Video'){
 };
 
 // Get audio and video stream going
-const audio = ytdl(ref, { filter: 'audioonly',quality:'highest'})
+const audio = ytdl(ref, { filter: 'audioonly',quality:'highestaudio'})
   .on('progress', (_, downloaded, total) => {
     tracker.audio = { downloaded, total };
   });
@@ -81,6 +82,7 @@ const ffmpegProcess = cp.spawn(ffmpeg, [
 ffmpegProcess.on('close', () => {
   process.stdout.write('\n\n\n\n');
   clearInterval(progressbar);
+  io.emit("Finish");
   console.log('done');
 });
 
@@ -99,8 +101,6 @@ ffmpegProcess.stdio[3].on('data', chunk => {
 audio.pipe(ffmpegProcess.stdio[4]);
 video.pipe(ffmpegProcess.stdio[5]);
 ffmpegProcess.stdio[6].pipe(fs.createWriteStream(path.resolve(__dirname,'../public/video.mkv')));
-}if(op=='MP4'){
-  ytdl(ref, { filter: format => format.container === 'mp4' ,quality:'highestvideo'}).pipe(fs.createWriteStream(path.resolve(__dirname,'../public/video.mp4')));
 }else{
   ytdl(ref,{filter:'audioonly',format:'highest'}).pipe(fs.createWriteStream(path.resolve(__dirname,'../public/audio.mp3')));
 }

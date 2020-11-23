@@ -9,19 +9,15 @@ document.getElementById("form").addEventListener('submit',e=>{
     method:"POST",
     body:JSON.stringify({uri:url,op:opcion})
     }).then(res=>res.json()).then(res=>{
-        if(res.op===true)alert("Se convirtio con exito");
+        if(res.op===true)alert("Empezando a convertir");
         else alert("Error al convertir");
     });
     if(opcion=='Audio'){
         document.getElementById("download").setAttribute("href","audio.mp3");
         document.getElementById("download").setAttribute("download","audio.mp3");
-    }
-    if(opcion=='MP4'){
-        document.getElementById("download").setAttribute("href","video.mp4");
-        document.getElementById("download").setAttribute("download","video.mp4");
     }if(opcion=='Video'){
-        document.getElementById("download").setAttribute("href","video.mvk");
-        document.getElementById("download").setAttribute("download","video.mvk");
+        document.getElementById("download").setAttribute("href","video.mkv");
+        document.getElementById("download").setAttribute("download","video.mkv");
     }
     e.preventDefault();
 })
