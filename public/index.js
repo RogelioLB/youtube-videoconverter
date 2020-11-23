@@ -19,7 +19,7 @@ document.getElementById("form").addEventListener('submit',e=>{
     if(opcion=='MP4'){
         document.getElementById("download").setAttribute("href","video.mp4");
         document.getElementById("download").setAttribute("download","video.mp4");
-    }else{
+    }if(opcion=='Video'){
         document.getElementById("download").setAttribute("href","video.mvk");
         document.getElementById("download").setAttribute("download","video.mvk");
     }
