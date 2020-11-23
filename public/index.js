@@ -10,5 +10,6 @@ document.getElementById("form").addEventListener('submit',e=>{
         if(res.op===true)alert("Se convirtio con exito");
         else alert("Error al convertir");
     });
+    document.getElementById("download").setAttribute("href","video.mp4")
     e.preventDefault();
 })
