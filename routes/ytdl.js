@@ -8,8 +8,9 @@ const routes=Router();
 
 routes.post("/",(req,res)=>{
   const {uri}=req.body;
+  let r=ytdl.validateURL(uri)
   ytdl.chooseFormat({ filter: format => format.container === 'mp4' },{quality:'137'})
-    if(ytdl.validateURL(uri)) {
+    if(r) {
       ytdl(uri)
     .pipe(fs.createWriteStream(path.resolve(__dirname,`../public/video.mp4`)))
       res.send({op:true});
