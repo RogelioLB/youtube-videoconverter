@@ -104,7 +104,7 @@ if(op=='Video'){
   });
   audio.pipe(ffmpegProcess.stdio[4]);
   video.pipe(ffmpegProcess.stdio[5]);
-  ffmpegProcess.stdio[6].pipe(fs.createWriteStream(path.resolve(__dirname,`../public/${nombre}.mvk`)));
+  ffmpegProcess.stdio[6].pipe(fs.createWriteStream(path.resolve(__dirname,`../public/${nombre}.mkv`)));
 }if(op=='Audio'){
 
   ytdl(ref, { filter: 'audioonly', quality: 'highestaudio' })
@@ -118,7 +118,7 @@ if(op=='Video'){
 
 var id=ytdl.getVideoID(ref);
 
-res.send({op:true,id:id,name:nombre});
+res.send({op:true,id:id,names:nombre});
 }
 }
 });

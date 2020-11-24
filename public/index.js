@@ -15,8 +15,7 @@ document.getElementById("form").addEventListener('submit',e=>{
     let url=document.getElementById("url").value;
     let opcion=document.form.Opciones.value;
     let name=document.getElementById("name").value;
-    
-    
+    let na;
     fetch("/url",{
         headers:{
         'Content-Type':'application/json'
@@ -26,18 +25,18 @@ document.getElementById("form").addEventListener('submit',e=>{
     }).then(res=>res.json()).then(res=>{
         if(res.op==true){
             alert("Convirtiendo");
-            name=res.name;
+            if(opcion=='Audio'){
+                document.getElementById("download").setAttribute("href",`${res.names}.mp3`);
+                document.getElementById("download").setAttribute("download",`${res.names}.mp3`);
+            }if(opcion=='Video'){
+                document.getElementById("download").setAttribute("href",`${res.names}.mkv`);
+                document.getElementById("download").setAttribute("download",`${res.names}.mkv`);
+            }
         }else{
             alert("Error al convertir");
         }
     });
-    if(opcion=='Audio'){
-        document.getElementById("download").setAttribute("href",`${name}.mp3`);
-        document.getElementById("download").setAttribute("download",`${name}.mp3`);
-    }if(opcion=='Video'){
-        document.getElementById("download").setAttribute("href",`${name}.mvk`);
-        document.getElementById("download").setAttribute("download",`${name}.mvk`);
-    }
+
     e.preventDefault();
 })
 
