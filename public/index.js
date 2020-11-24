@@ -15,7 +15,6 @@ document.getElementById("form").addEventListener('submit',e=>{
     let url=document.getElementById("url").value;
     let opcion=document.form.Opciones.value;
     let name=document.getElementById("name").value;
-    let na;
     fetch("/url",{
         headers:{
         'Content-Type':'application/json'
@@ -23,12 +22,13 @@ document.getElementById("form").addEventListener('submit',e=>{
     method:"POST",
     body:JSON.stringify({uri:url,op:opcion,name:name})
     }).then(res=>res.json()).then(res=>{
+        console.log(res.op);
         if(res.op==true){
             alert("Convirtiendo");
             if(opcion=='Audio'){
                 document.getElementById("download").setAttribute("href",`${res.names}.mp3`);
                 document.getElementById("download").setAttribute("download",`${res.names}.mp3`);
-            }if(opcion=='Video'){
+            }else{
                 document.getElementById("download").setAttribute("href",`${res.names}.mkv`);
                 document.getElementById("download").setAttribute("download",`${res.names}.mkv`);
             }
@@ -40,9 +40,3 @@ document.getElementById("form").addEventListener('submit',e=>{
     e.preventDefault();
 })
 
-var loadInfo = function (videoId) {
-    var gdata = document.createElement("script");
-    gdata.src = "http://gdata.youtube.com/feeds/api/videos/" + videoId + "?v=2&alt=jsonc&callback=storeInfo";
-    var body = document.getElementsByTagName("body")[0];
-    body.appendChild(gdata);
-};

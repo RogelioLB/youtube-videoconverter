@@ -20,7 +20,7 @@
         </div>
         <div>
             <button>Convertir</button>
-            <a href="video.mkv" download="video.mkv" id="download">Descargar</a>
+            <a href download id="download">Descargar</a>
         </div>
     </form>
     <h1 id="total"></h1>
@@ -35,7 +35,6 @@
           alert("Se ha convertido con exito.");
       })
       socket.on("upload",(data)=>{
-          console.log(data);
           document.getElementById("total").innerHTML=data.downloaded+"% Convertido";
       })
     </script>

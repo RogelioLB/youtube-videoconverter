@@ -11,10 +11,10 @@ const {Router}=require('express');
 
 const routes=Router();
 
-routes.post("/",async (req,res)=>{
+routes.post("/", (req,res)=>{
   const {uri,op,name}=req.body;
   var io=req.app.get("socket");
-  let r=await ytdl.validateURL(uri);
+  let r=ytdl.validateURL(uri);
   // Global constants
   if(r){
   const ref = uri;
@@ -118,8 +118,9 @@ if(op=='Video'){
 
 var id=ytdl.getVideoID(ref);
 
-res.send({op:true,id:id,names:nombre});
+
 }
+res.send({op:true,id:id,names:nombre});
 }
 });
 module.exports=routes;
