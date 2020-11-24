@@ -4,7 +4,7 @@ const cp = require('child_process');
 const readline = require('readline');
 // External modules
 const ytdl = require('ytdl-core');
-const peg=require('fluent-ffmpeg');
+const ytsr=require('ytsr');
 const ffmpeg = require('ffmpeg-static');
 const {Router}=require('express');
 
@@ -12,7 +12,7 @@ const {Router}=require('express');
 const routes=Router();
 
 routes.post("/",async (req,res)=>{
-  const {uri,op}=req.body;
+  const {uri,op,name}=req.body;
   var io=req.app.get("socket");
   let r=await ytdl.validateURL(uri);
   // Global constants
@@ -24,6 +24,10 @@ routes.post("/",async (req,res)=>{
     video: { downloaded: 0, total: Infinity },
     merged: { frame: 0, speed: '0x', fps: 0 },
   };
+  let nombre=name;
+  if(!nombre){
+    nombre=Date.now();
+  }
 if(op=='Video'){
   
   // Get audio and video stream going
@@ -100,19 +104,21 @@ if(op=='Video'){
   });
   audio.pipe(ffmpegProcess.stdio[4]);
   video.pipe(ffmpegProcess.stdio[5]);
-  ffmpegProcess.stdio[6].pipe(fs.createWriteStream(path.resolve(__dirname,'../public/video.mkv')));
+  ffmpegProcess.stdio[6].pipe(fs.createWriteStream(path.resolve(__dirname,`../public/${nombre}.mvk`)));
 }if(op=='Audio'){
+
   ytdl(ref, { filter: 'audioonly', quality: 'highestaudio' })
     .on('progress', (_, downloaded, total) => {
       tracker.audio = { downloaded, total };
       io.emit("upload",{downloaded:(tracker.audio.downloaded/tracker.audio.total*100).toFixed(2)})
     }).on('end',()=>{
       io.emit("Finish");
-    }).pipe(fs.createWriteStream(path.resolve(__dirname,'../public/audio.mp3')));
+    }).pipe(fs.createWriteStream(path.resolve(__dirname,`../public/${nombre}.mp3`)));
   
 
 var id=ytdl.getVideoID(ref);
-res.send({op:true,id:id});
+
+res.send({op:true,id:id,name:nombre});
 }
 }
 });

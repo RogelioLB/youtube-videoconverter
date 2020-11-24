@@ -31,6 +31,7 @@ app.use(express.static(path.resolve(__dirname,'public')));
 
 
 app.use("/url",require('./routes/ytdl'));
+app.use("/id",require('./routes/id'));
 
 
 http.listen(app.get("port"),()=>{
