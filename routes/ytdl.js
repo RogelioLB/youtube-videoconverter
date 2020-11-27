@@ -4,16 +4,14 @@ const cp = require('child_process');
 const readline = require('readline');
 // External modules
 const ytdl = require('ytdl-core');
-const ytsr=require('ytsr');
 const ffmpeg = require('ffmpeg-static');
 const {Router}=require('express');
-const { title } = require('process');
 
 
 const routes=Router();
 
 routes.post("/", async(req,res)=>{
-  const {uri,op}=req.body;
+  const {uri,op,id}=req.body;
   var io=req.app.get("socket");
   let r=ytdl.validateURL(uri);
   // Global constants
@@ -55,7 +53,7 @@ if(op=='Video'){
   
     process.stdout.write(`running for: ${((Date.now() - tracker.start) / 1000 / 60).toFixed(2)} Minutes.`);
     readline.moveCursor(process.stdout, 0, -3);
-    io.emit("upload",{downloaded:(tracker.video.downloaded / tracker.video.total * 100).toFixed(2)})
+    io.sockets.socket(id).emit("upload",{downloaded:(tracker.video.downloaded / tracker.video.total * 100).toFixed(2)})
   }, 5000);
   
   // Start the ffmpeg child process
@@ -86,7 +84,7 @@ if(op=='Video'){
     process.stdout.write('\n\n\n\n');
     clearInterval(progressbar);
     console.log('done');
-    io.emit("Finish");
+    io.sockets.socket(id).emit("Finish");
   });
   
   // Link streams
@@ -109,17 +107,17 @@ if(op=='Video'){
   ytdl(ref, { filter: 'audioonly', quality: 'highestaudio' })
     .on('progress', (_, downloaded, total) => {
       tracker.audio = { downloaded, total };
-      io.emit("upload",{downloaded:(tracker.audio.downloaded/tracker.audio.total*100).toFixed(2)})
+      io.to(id).emit("upload",{downloaded:(tracker.audio.downloaded/tracker.audio.total*100).toFixed(2)})
     }).on('end',()=>{
-      io.emit("Finish");
+      io.to(id).emit("Finish");
     }).pipe(fs.createWriteStream(path.resolve(__dirname,`../public/${nombre}.mp3`)));
   
 
-var id=ytdl.getVideoID(ref);
+var iD=ytdl.getVideoID(ref);
 
 
 }
-res.send({op:true,id:id,names:nombre,title:songinfo.videoDetails.title});
+res.send({op:true,id:iD,names:nombre,title:songinfo.videoDetails.title});
 }
 });
 module.exports=routes;

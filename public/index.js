@@ -1,3 +1,8 @@
+var socket = io();
+let id;
+socket.on('connect',function(){
+    id=socket.id;
+})
 document.getElementById("url").addEventListener("change",()=>{
     let value = document.getElementById("url").value;
     fetch("/id",{
@@ -19,7 +24,7 @@ document.getElementById("form").addEventListener('submit',e=>{
         'Content-Type':'application/json'
     },
     method:"POST",
-    body:JSON.stringify({uri:url,op:opcion})
+    body:JSON.stringify({uri:url,op:opcion,id:id})
     }).then(res=>res.json()).then(res=>{
         if(res.op==true){
             document.getElementById("title").innerHTML=`${res.title}`;;
@@ -39,3 +44,9 @@ document.getElementById("form").addEventListener('submit',e=>{
     e.preventDefault();
 })
 
+socket.on("Finish",()=>{
+    alert("Se ha convertido con exito.");
+})
+socket.on("upload",(data)=>{
+    document.getElementById("total").innerHTML=data.downloaded+"% Convertido";
+})

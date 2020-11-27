@@ -6,11 +6,10 @@ const app=express();
 var http = require('http').createServer(app);
 const io=require('socket.io')(http);
 
+let user={};
 
 io.on('connection', function(socket){
-
     console.log('user connected with socketId '+socket.id);
-  
     socket.on('event', function(data){
         console.log('event fired');
     });
@@ -18,8 +17,9 @@ io.on('connection', function(socket){
     socket.on('disconnect', function(){
         console.log('user disconnected');
     });
-  
   });
+
+
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
