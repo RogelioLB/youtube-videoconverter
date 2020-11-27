@@ -53,7 +53,7 @@ if(op=='Video'){
   
     process.stdout.write(`running for: ${((Date.now() - tracker.start) / 1000 / 60).toFixed(2)} Minutes.`);
     readline.moveCursor(process.stdout, 0, -3);
-    io.sockets.socket(id).emit("upload",{downloaded:(tracker.video.downloaded / tracker.video.total * 100).toFixed(2)})
+    io.to(id).emit("upload",{downloaded:(tracker.video.downloaded / tracker.video.total * 100).toFixed(2)})
   }, 5000);
   
   // Start the ffmpeg child process
@@ -84,7 +84,7 @@ if(op=='Video'){
     process.stdout.write('\n\n\n\n');
     clearInterval(progressbar);
     console.log('done');
-    io.sockets.socket(id).emit("Finish");
+    io.to(id).emit("Finish");
   });
   
   // Link streams
