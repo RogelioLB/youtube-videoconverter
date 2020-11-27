@@ -7,12 +7,13 @@ const ytdl = require('ytdl-core');
 const ytsr=require('ytsr');
 const ffmpeg = require('ffmpeg-static');
 const {Router}=require('express');
+const { title } = require('process');
 
 
 const routes=Router();
 
-routes.post("/", (req,res)=>{
-  const {uri,op,name}=req.body;
+routes.post("/", async(req,res)=>{
+  const {uri,op}=req.body;
   var io=req.app.get("socket");
   let r=ytdl.validateURL(uri);
   // Global constants
@@ -24,10 +25,8 @@ routes.post("/", (req,res)=>{
     video: { downloaded: 0, total: Infinity },
     merged: { frame: 0, speed: '0x', fps: 0 },
   };
-  let nombre=name;
-  if(!nombre){
-    nombre=Date.now();
-  }
+  var songinfo=await ytdl.getInfo(ref);
+  let nombre=songinfo.videoDetails.title;
 if(op=='Video'){
   
   // Get audio and video stream going
@@ -120,7 +119,7 @@ var id=ytdl.getVideoID(ref);
 
 
 }
-res.send({op:true,id:id,names:nombre});
+res.send({op:true,id:id,names:nombre,title:songinfo.videoDetails.title});
 }
 });
 module.exports=routes;
