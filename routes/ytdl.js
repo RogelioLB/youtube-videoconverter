@@ -32,7 +32,7 @@ if(op=='Video'){
     .on('progress', (_, downloaded, total) => {
       tracker.audio = { downloaded, total };
     });
-  const video = ytdl(ref, { filter: 'videoonly', quality: 'highestvideo' })
+  const video = ytdl(ref, { filter: 'videoonly', quality: '136' })
     .on('progress', (_, downloaded, total) => {
       tracker.video = { downloaded, total };
     });
@@ -54,7 +54,7 @@ if(op=='Video'){
     process.stdout.write(`running for: ${((Date.now() - tracker.start) / 1000 / 60).toFixed(2)} Minutes.`);
     readline.moveCursor(process.stdout, 0, -3);
     io.to(id).emit("upload",{downloaded:(tracker.video.downloaded / tracker.video.total * 100).toFixed(2)})
-  }, 5000);
+  }, 1000);
   
   // Start the ffmpeg child process
   const ffmpegProcess = cp.spawn(ffmpeg, [
@@ -66,6 +66,7 @@ if(op=='Video'){
     '-i', 'pipe:4',
     '-i', 'pipe:5',
     // Rescale the video
+    '-vf','scale=-1:1080',
     // Choose some fancy codes
     '-c:v', 'libx265', '-x265-params', 'log-level=0',
     '-c:a', 'flac',
