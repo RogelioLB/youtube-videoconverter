@@ -5,6 +5,10 @@ socket.on('connect',function(){
 })
 document.getElementById("url").addEventListener("change",()=>{
     let value = document.getElementById("url").value;
+    if (value == "") {
+        document.querySelector('.miniatura').style.display = "none";
+        return;
+    }
     fetch("/id",{
         headers:{
             "Content-Type":'application/json'
@@ -13,6 +17,7 @@ document.getElementById("url").addEventListener("change",()=>{
         body:JSON.stringify({url:value})
     }).then(res=>res.json()).then(res=>{
         document.getElementById("video").setAttribute("src",`https://img.youtube.com/vi/${res.id}/mqdefault.jpg`);
+        document.querySelector('.miniatura').style.display = "flex";
     }).catch(err=>console.log(err));
 })
 

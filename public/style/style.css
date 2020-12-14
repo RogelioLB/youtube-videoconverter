@@ -1,3 +1,6 @@
+html{
+    overflow-x: hidden;
+}
 body{
     font-family:sans-serif;
     font-size:16px;
@@ -38,14 +41,22 @@ form{
 }
 .input-text{
     padding:15px;
-    width:100%;
+    width:calc(100% - 30px);
     border:1px solid gray;
 }
 
 .miniatura{
     text-align:center;
-    display:flex;
+    display:none;
     align-items: center;
     justify-content: center;
     flex-direction:column;
+}
+@media (max-width: 360px) {
+    form{
+        max-width:240px;
+    }
+    .boton{
+        display:inline-block;
+    }
 }
