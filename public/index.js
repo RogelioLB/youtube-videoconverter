@@ -38,8 +38,8 @@ document.getElementById("form").addEventListener('submit',e=>{
                 document.getElementById("download").setAttribute("href",`${res.names}.mp3`);
                 document.getElementById("download").setAttribute("download",`${res.names}.mp3`);
             }else{
-                document.getElementById("download").setAttribute("href",`${res.names}.mkv`);
-                document.getElementById("download").setAttribute("download",`${res.names}.mkv`);
+                document.getElementById("download").setAttribute("href",`${res.names}.mp4`);
+                document.getElementById("download").setAttribute("download",`${res.names}.mp4`);
             }
         }else{
             alert("Error al convertir");
