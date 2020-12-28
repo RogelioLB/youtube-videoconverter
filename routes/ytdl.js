@@ -32,7 +32,7 @@ routes.post("/", async(req,res)=>{
     nombre=removeEmojis(nombre);
     console.log(nombre);
 if(op=='Video'){
-  /*
+/*
   // Get audio and video stream going
   const audio = ytdl(ref, { filter: 'audioonly', quality: 'highestaudio' })
     .on('progress', (_, downloaded, total) => {
@@ -81,11 +81,7 @@ if(op=='Video'){
   ], {
     windowsHide: true,
     stdio: [
-      /* Standard: stdin, stdout, stderr */
-      /*
       'inherit', 'inherit', 'inherit',
-      /* Custom: pipe:3, pipe:4, pipe:5, pipe:6 */
-      /*
       'pipe', 'pipe', 'pipe', 'pipe',
     ],
   });
@@ -111,13 +107,13 @@ if(op=='Video'){
   audio.pipe(ffmpegProcess.stdio[4]);
   video.pipe(ffmpegProcess.stdio[5]);
   ffmpegProcess.stdio[6].pipe(fs.createWriteStream(path.resolve(__dirname,`../public/${nombre}.mkv`)));
-  */
+*/
   ytdl(ref, { quality: 'highest' }).on('progress', (_, downloaded, total) => {
     tracker.video = { downloaded, total };
-    io.to(id).emit("upload", { downloaded: (tracker.video.downloaded / tracker.video.total * 100).toFixed(2) }).on('end', () => {
-      io.to(id).emit("Finish");
-    }).pipe(fs.createWriteStream(path.resolve(__dirname, `../public/${nombre}.mp4`)));
-  })
+    io.to(id).emit("upload", { downloaded: (tracker.video.downloaded / tracker.video.total * 100).toFixed(2) })
+  }).on('end', () => {
+    io.to(id).emit("Finish");
+  }).pipe(fs.createWriteStream(path.resolve(__dirname, `../public/${nombre}.mp4`)));
     } if (op == 'Audio') {
   ytdl(ref, { filter: 'audioonly' ,quality:'highestaudio'})
     .on('progress', (_, downloaded, total) => {
