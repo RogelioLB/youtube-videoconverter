@@ -12,6 +12,7 @@
     "@ytdl/ytdl": "^1.4.16",
     "ajax-request": "^1.2.3",
     "child_process": "^1.0.2",
+    "downloads-folder": "^3.0.1",
     "express": "^4.17.1",
     "ffmpeg-static": "^4.2.7",
     "fluent-ffmpeg": "^2.1.2",
