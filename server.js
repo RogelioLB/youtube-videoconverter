@@ -26,8 +26,7 @@ app.use(express.json());
 app.set("port",process.env.PORT||3000);
 app.set("socket",io);
 
-
-app.use(express.static(path.resolve(__dirname,'public')));
+app.use(express.static(path.resolve(__dirname,'views')))
 
 
 app.use("/url",require('./routes/ytdl'));

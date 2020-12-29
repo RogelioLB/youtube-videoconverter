@@ -2,6 +2,8 @@ const fs = require('fs');
 const path=require('path');
 const cp = require('child_process');
 const readline = require('readline');
+const downloadsFolder = require('downloads-folder');
+console.log(downloadsFolder());
 // External modules
 const ytdl = require('ytdl-core');
 const ffmpeg = require('ffmpeg-static');
@@ -30,6 +32,15 @@ routes.post("/", async(req,res)=>{
   var songinfo=await ytdl.getInfo(ref);
     let nombre = songinfo.videoDetails.title;
     nombre=removeEmojis(nombre);
+    nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    nombre=nombre.replace("?"," ");
+    nombre=nombre.replace("¿"," ");
+    nombre=nombre.replace("!"," ");
+    nombre=nombre.replace("¡"," ");
+    nombre=nombre.replace(":","");
+    nombre=nombre.replace("|","");
+    nombre=nombre.replace("//","");
+    nombre=nombre.replace("/","");
     console.log(nombre);
 if(op=='Video'){
 /*
@@ -112,16 +123,16 @@ if(op=='Video'){
     tracker.video = { downloaded, total };
     io.to(id).emit("upload", { downloaded: (tracker.video.downloaded / tracker.video.total * 100).toFixed(2) })
   }).on('end', () => {
-    io.to(id).emit("Finish");
-  }).pipe(fs.createWriteStream(path.resolve(__dirname, `../public/${nombre}.mp4`)));
+    io.to(id).emit("Finish",{dir:path.resolve(downloadsFolder(),`${nombre}.mp4`)});
+  }).pipe(fs.createWriteStream(path.resolve(downloadsFolder(),`${nombre}.mp4`)));
     } if (op == 'Audio') {
   ytdl(ref, { filter: 'audioonly' ,quality:'highestaudio'})
     .on('progress', (_, downloaded, total) => {
       tracker.audio = { downloaded, total };
       io.to(id).emit("upload",{downloaded:(tracker.audio.downloaded/tracker.audio.total*100).toFixed(2)})
     }).on('end',()=>{
-      io.to(id).emit("Finish");
-    }).pipe(fs.createWriteStream(path.resolve(__dirname,`../public/${nombre}.mp3`)));
+      io.to(id).emit("Finish", {dir:path.resolve(downloadsFolder(),`${nombre}.mp3`)});
+    }).pipe(fs.createWriteStream(path.resolve(downloadsFolder(),`${nombre}.mp3`)));
   
 
     var iD=ytdl.getVideoID(ref);
