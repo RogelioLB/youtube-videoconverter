@@ -123,16 +123,16 @@ if(op=='Video'){
     tracker.video = { downloaded, total };
     io.to(id).emit("upload", { downloaded: (tracker.video.downloaded / tracker.video.total * 100).toFixed(2) })
   }).on('end', () => {
-    io.to(id).emit("Finish",{dir:path.resolve(downloadsFolder(),`${nombre}.mp4`)});
-  }).pipe(fs.createWriteStream(path.resolve(downloadsFolder(),`${nombre}.mp4`)));
+    io.to(id).emit("Finish");
+  }).pipe(fs.createWriteStream(path.resolve(__dirname,`public/${nombre}.mp4`)));
     } if (op == 'Audio') {
   ytdl(ref, { filter: 'audioonly' ,quality:'highestaudio'})
     .on('progress', (_, downloaded, total) => {
       tracker.audio = { downloaded, total };
       io.to(id).emit("upload",{downloaded:(tracker.audio.downloaded/tracker.audio.total*100).toFixed(2)})
     }).on('end',()=>{
-      io.to(id).emit("Finish", {dir:path.resolve(downloadsFolder(),`${nombre}.mp3`)});
-    }).pipe(fs.createWriteStream(path.resolve(downloadsFolder(),`${nombre}.mp3`)));
+      io.to(id).emit("Finish");
+    }).pipe(fs.createWriteStream(path.resolve(__dirname,`../public/${nombre}.mp3`)));
   
 
     var iD=ytdl.getVideoID(ref);

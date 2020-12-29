@@ -50,7 +50,7 @@ document.getElementById("form").addEventListener('submit',e=>{
 })
 
 socket.on("Finish",(data)=>{
-    alert(`Se ha convertido con exito.\nEl archivo se encuentra en: ${data.dir}`);
+    alert(`Se ha convertido con exito.`);
 })
 socket.on("upload",(data)=>{
     document.getElementById("total").innerHTML=data.downloaded+"% Convertido";
