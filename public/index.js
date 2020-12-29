@@ -49,8 +49,8 @@ document.getElementById("form").addEventListener('submit',e=>{
     e.preventDefault();
 })
 
-socket.on("Finish",()=>{
-    alert("Se ha convertido con exito.");
+socket.on("Finish",(data)=>{
+    alert(`Se ha convertido con exito.\nEl archivo se encuentra en: ${data.dir}`);
 })
 socket.on("upload",(data)=>{
     document.getElementById("total").innerHTML=data.downloaded+"% Convertido";
