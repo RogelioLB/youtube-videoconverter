@@ -2,8 +2,6 @@ const fs = require('fs');
 const path=require('path');
 const cp = require('child_process');
 const readline = require('readline');
-const downloadsFolder = require('downloads-folder');
-console.log(downloadsFolder());
 // External modules
 const ytdl = require('ytdl-core');
 const ffmpeg = require('ffmpeg-static');
@@ -124,7 +122,7 @@ if(op=='Video'){
     io.to(id).emit("upload", { downloaded: (tracker.video.downloaded / tracker.video.total * 100).toFixed(2) })
   }).on('end', () => {
     io.to(id).emit("Finish");
-  }).pipe(fs.createWriteStream(path.resolve(__dirname,`public/${nombre}.mp4`)));
+  }).pipe(fs.createWriteStream(path.resolve(__dirname,`../public/${nombre}.mp4`)));
     } if (op == 'Audio') {
   ytdl(ref, { filter: 'audioonly' ,quality:'highestaudio'})
     .on('progress', (_, downloaded, total) => {
