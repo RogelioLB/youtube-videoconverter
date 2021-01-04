@@ -32,6 +32,7 @@ routes.post("/", async(req,res)=>{
     let nombre = songinfo.videoDetails.title;
     nombre=removeEmojis(nombre);
     nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    /*
     nombre=nombre.replaceAll("?"," ");
     nombre=nombre.replaceAll("¿"," ");
     nombre=nombre.replaceAll("!","");
@@ -42,6 +43,7 @@ routes.post("/", async(req,res)=>{
     nombre=nombre.replaceAll("/","");
     nombre=nombre.replaceAll('"',"");
     console.log(nombre);
+    */
 if(op=='Video'){
   console.log(path.resolve(__dirname,`../public/${nombre}.mvk`));
   try{
