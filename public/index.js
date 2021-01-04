@@ -24,12 +24,13 @@ document.getElementById("url").addEventListener("change",()=>{
 document.getElementById("form").addEventListener('submit',e=>{
     let url=document.getElementById("url").value;
     let opcion=document.form.Opciones.value;
+    let quality = document.form.quality.value;
     fetch("/url",{
         headers:{
         'Content-Type':'application/json'
     },
     method:"POST",
-    body:JSON.stringify({uri:url,op:opcion,id:id})
+    body:JSON.stringify({uri:url,op:opcion,id:id,quality:quality})
     }).then(res=>res.json()).then(res=>{
         if(res.op==true){
             document.getElementById("title").innerHTML=`${res.title}`;;
@@ -38,8 +39,8 @@ document.getElementById("form").addEventListener('submit',e=>{
                 document.getElementById("download").setAttribute("href",`${res.names}.mp3`);
                 document.getElementById("download").setAttribute("download",`${res.names}.mp3`);
             }else{
-                document.getElementById("download").setAttribute("href",`${res.names}.mp4`);
-                document.getElementById("download").setAttribute("download",`${res.names}.mp4`);
+                document.getElementById("download").setAttribute("href",`${res.names}.mkv`);
+                document.getElementById("download").setAttribute("download",`${res.names}.mkv`);
             }
         }else{
             alert("Error al convertir");
