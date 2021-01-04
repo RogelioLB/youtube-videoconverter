@@ -43,7 +43,7 @@ document.getElementById("form").addEventListener('submit',e=>{
                 document.getElementById("download").setAttribute("download",`${res.names}.mkv`);
             }
         }else{
-            alert("Error al convertir");
+            alert("No hay formato disponible para esa calidad.");
         }
     });
 
