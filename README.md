@@ -1,10 +1,6 @@
 # youtube-videoconverter
-App para descargar videos de youtube en mp3 y mp4
+<h1>Convertidor de videos online</h1>
 
 
-  Para comenzar se necesita tener instalado node en el ordenador junto con todos los modulos necesarios usando npm install dentro de la  carpeta del proyecto.
-  
-  Despues para iniciarlo es tan solo usar node server.js.
- 
- 
- Con esto se iniciara y se podra visualizar en localhost:3000 en tu navegador.
+<p>Con esto podran descargar videos .mkv en 1080p, 720p o 480p incluyendo audios en mp3</p>
+<p>Para visualizar el resultado esta <a href="https://youtube-videoconverter.herokuapp.com/"></a></p>

@@ -45,7 +45,6 @@ routes.post("/", async(req,res)=>{
     console.log(nombre);
     */
 if(op=='Video'){
-  console.log(path.resolve(__dirname,`../public/${nombre}.mvk`));
   try{
     ytdl.chooseFormat(songinfo.formats,{quality:`${quality}`});
   }catch(err){
